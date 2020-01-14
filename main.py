@@ -8,8 +8,6 @@ botToken = constants.botToken
 
 newsapi = NewsApiClient(api_key=apiKey)
 
-# https://api.telegram.org/bot1023706952:AAEzoXtuXn7IYPXzqUyjfytmQzI6CVMPKVA/getUpdates
-
 bot = telebot.TeleBot(botToken)
 
 categoriesSelected = []
