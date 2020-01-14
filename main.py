@@ -1,11 +1,10 @@
 import telebot
 from newsapi import NewsApiClient
 from itertools import groupby
+import constants
 
-
-botToken = '1023706952:AAEzoXtuXn7IYPXzqUyjfytmQzI6CVMPKVA'
-botUrl = 'https://api.telegram.org/bot' + botToken + '/'
-apiKey = 'fc3c4a1a6478477c950bf27f2500ded9'
+apiKey = constants.apiKey
+botToken = constants.botToken
 
 newsapi = NewsApiClient(api_key=apiKey)
 
