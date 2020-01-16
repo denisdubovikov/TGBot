@@ -111,6 +111,8 @@ def set_categories(message):
 
 @bot.callback_query_handler(func=lambda c: c.data == 'ruTop')
 def set_categories_now(c):
+    global categoriesSelected
+
     bot.answer_callback_query(callback_query_id=c.id)
 
     categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=ru&apiKey=" + apiKey)
@@ -121,6 +123,8 @@ def set_categories_now(c):
 
 @bot.callback_query_handler(func=lambda c: c.data == 'frTop')
 def set_categories_now(c):
+    global categoriesSelected
+
     bot.answer_callback_query(callback_query_id=c.id)
 
     categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=fr&apiKey=" + apiKey)
@@ -131,12 +135,27 @@ def set_categories_now(c):
 
 @bot.callback_query_handler(func=lambda c: c.data == 'apTop')
 def set_categories_now(c):
+    global categoriesSelected
+
     bot.answer_callback_query(callback_query_id=c.id)
 
     categoriesSelected.append("https://newsapi.org/v2/top-headlines?q=apple&apiKey=" + apiKey)
     print(categoriesSelected[len(categoriesSelected) - 1])
 
     bot.send_message(c.message.chat.id, 'Added')
+
+
+@bot.callback_query_handler(func=lambda c: c.data == 'continue')
+def set_categories_now(c):
+    global categoriesSelected
+
+    print('HERE!')
+
+    bot.answer_callback_query(callback_query_id=c.id)
+
+    categoriesSelectedSet = list(set(categoriesSelected))
+    categoriesSelected = categoriesSelectedSet
+    print(categoriesSelected)
 
 
 def parse_news():
