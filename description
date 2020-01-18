@@ -1,0 +1,3 @@
+This is the NewsFeed bot. It is based on newsapi.org.
+You can read news from it by using requests based on some categories.
+Later it will be connected to the iOS application.
