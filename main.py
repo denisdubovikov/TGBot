@@ -3,6 +3,8 @@ from newsapi import NewsApiClient
 from itertools import groupby
 import constants
 
+# telebot.apihelper.proxy = {'':''}
+
 apiKey = constants.apiKey
 botToken = constants.botToken
 
@@ -32,16 +34,67 @@ def handle_help(message):
 
 @bot.message_handler(commands=["setlang"])
 def handle_setlang(message):
+    print('21qw')
     set_language(message)
 
 
-# @bot.message_handler(content_types=["text"])
-# def handle_text(message):
-#     if message.text == "ru" or message.text == "us" or message.text == "fr" or message.text == "it" or message.text == "de" or message.text == "gb":
-#         userLanguage = message.text
-#
-#     bot.send_message(message.chat.id, f"Your language was set to " + message.text + "!\nIf you want to change another - use /setlang")
+@bot.message_handler(commands=["favorites"])
+def show_favorites(message):
+    if len(categoriesSelected) == 0:
+        bot.send_message(message.chat.id, text="You have no favorites")
+        return
 
+    message_text = "Your favorites:\n"
+
+    for i in range(len(categoriesSelected)):
+        message_text += str(i + 1) + ". " + str(categoriesSelected[i]) + "\n"
+
+    bot.send_message(message.chat.id, text=message_text)
+
+
+@bot.message_handler(commands=["addfavorites"])
+def add_favorites(message):
+    set_categories(message)
+
+
+@bot.message_handler(commands=["cutfavorites"])
+def cut_favorites(message):
+    global categoriesSelected
+
+    if len(categoriesSelected) == 0:
+        bot.send_message(chat_id=message.chat.id, text="The list is empty")
+        return
+
+    keyboard = telebot.types.InlineKeyboardMarkup()
+
+    for i in range(len(categoriesSelected)):
+        keyboardButton = telebot.types.InlineKeyboardButton(categoriesSelected[i],
+                                                            callback_data="cut_" + str(categoriesSelected[i]))
+        keyboard.add(keyboardButton)
+        print(categoriesSelected[i])
+
+    bot.send_message(message.chat.id, "Choose to cut", reply_markup=keyboard)
+
+
+@bot.callback_query_handler(func=lambda c: c.data[0:min(4, len(c.data))] == 'cut_')
+def cut_the_category(c):
+    print("HERE!!!")
+    bot.answer_callback_query(callback_query_id=c.id)
+
+    cut_the_category(c.data[4:len(c.data)])
+    # bot.send_message(c.message.chat.id, 'Now pressed')
+    # set_categories(c.message)
+
+
+def cut_the_category(category_name):
+    print(category_name)
+
+    # global categoriesSelected
+
+    if categoriesSelected.count(category_name):
+        categoriesSelected.remove(category_name)
+
+    print(categoriesSelected)
 
 
 
@@ -52,32 +105,10 @@ def handle_text(message):
     if message.text == "Cancel":
         pass
 
-    # if message.text == "Russian top":
-    #     categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=ru&apiKey=" + apiKey)
-    #     print(categoriesSelected[len(categoriesSelected) - 1])
-    #
-    # if message.text == "France top":
-    #     categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=fr&apiKey=" + apiKey)
-    #     print(categoriesSelected[len(categoriesSelected) - 1])
-    #
-    # if message.text == "Apple news":
-    #     categoriesSelected.append("https://newsapi.org/v2/everything?q=apple&&apiKey=" + apiKey)
-    #     print(categoriesSelected[len(categoriesSelected) - 1])
-    #
-    # if message.text == "Continue!":
-    #     categoriesSelectedSet = list(set(categoriesSelected))
-    #     categoriesSelected = categoriesSelectedSet
-    #     print("Here")
-    #     print(categoriesSelected)
-
 def set_language(message):
     keyboard = telebot.types.ReplyKeyboardMarkup(one_time_keyboard=True, resize_keyboard=True)
     keyboardButton1 = telebot.types.KeyboardButton("ru")
     keyboardButton2 = telebot.types.KeyboardButton("us")
-    # keyboardButton3 = telebot.types.KeyboardButton("fr")
-    # keyboardButton4 = telebot.types.KeyboardButton("it")
-    # keyboardButton5 = telebot.types.KeyboardButton("de")
-    # keyboardButton6 = telebot.types.KeyboardButton("gb")
     keyboard.add(keyboardButton1, keyboardButton2)
 
     bot.send_message(message.chat.id, "Chose the language of the interface", reply_markup=keyboard)
@@ -113,36 +144,39 @@ def set_categories(message):
 def set_categories_now(c):
     global categoriesSelected
 
-    bot.answer_callback_query(callback_query_id=c.id)
+    bot.answer_callback_query(callback_query_id=c.id, text='Added')
 
-    categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=ru&apiKey=" + apiKey)
+    # categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=ru&apiKey=" + apiKey)
+    categoriesSelected.append("Russian top")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
-    bot.send_message(c.message.chat.id, 'Added')
+    # bot.send_message(c.message.chat.id, 'Added')
 
 
 @bot.callback_query_handler(func=lambda c: c.data == 'frTop')
 def set_categories_now(c):
     global categoriesSelected
 
-    bot.answer_callback_query(callback_query_id=c.id)
+    bot.answer_callback_query(callback_query_id=c.id, text='Added')
 
-    categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=fr&apiKey=" + apiKey)
+    # categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=fr&apiKey=" + apiKey)
+    categoriesSelected.append("France top")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
-    bot.send_message(c.message.chat.id, 'Added')
+    # bot.send_message(c.message.chat.id, 'Added')
 
 
 @bot.callback_query_handler(func=lambda c: c.data == 'apTop')
 def set_categories_now(c):
     global categoriesSelected
 
-    bot.answer_callback_query(callback_query_id=c.id)
+    bot.answer_callback_query(callback_query_id=c.id, text='Added')
 
-    categoriesSelected.append("https://newsapi.org/v2/top-headlines?q=apple&apiKey=" + apiKey)
+    # categoriesSelected.append("https://newsapi.org/v2/top-headlines?q=apple&apiKey=" + apiKey)
+    categoriesSelected.append("Apple news")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
-    bot.send_message(c.message.chat.id, 'Added')
+    # bot.send_message(c.message.chat.id, 'Added')
 
 
 @bot.callback_query_handler(func=lambda c: c.data == 'continue')
@@ -156,6 +190,13 @@ def set_categories_now(c):
     categoriesSelectedSet = list(set(categoriesSelected))
     categoriesSelected = categoriesSelectedSet
     print(categoriesSelected)
+
+    print(c.message.chat.id)
+
+    bot.send_message(chat_id=c.message.chat.id, text='Favorites saved')
+
+    # bot.edit_message_reply_markup(chat_id=c.message.chat.id, reply_markup=None)
+
 
 
 def parse_news():
