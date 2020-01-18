@@ -2,6 +2,7 @@ import telebot
 from newsapi import NewsApiClient
 from itertools import groupby
 import constants
+import startmessage
 
 # telebot.apihelper.proxy = {'':''}
 
@@ -19,7 +20,7 @@ ID = ''
 
 @bot.message_handler(commands=["start"])
 def handle_start(message):
-    startText = "Hello, I'm your personal news bot!"
+    startText = startmessage.text
     bot.send_message(message.chat.id, startText)
 
     offer_to_set_categories(message)
@@ -128,6 +129,13 @@ def set_categories_now(c):
     bot.answer_callback_query(callback_query_id=c.id)
     # bot.send_message(c.message.chat.id, 'Now pressed')
     set_categories(c.message)
+
+
+@bot.callback_query_handler(func=lambda c: c.data == 'setCategoriesLater')
+def set_categories_later(c):
+    bot.answer_callback_query(callback_query_id=c.id)
+    bot.send_message(chat_id=c.message.chat.id,
+                     text="Use /addfavorites and /cutfavorites to your list of favorites later")
 
 
 def set_categories(message):
