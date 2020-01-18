@@ -4,7 +4,8 @@ from itertools import groupby
 import constants
 import startmessage
 
-# telebot.apihelper.proxy = {'':''}
+PROXY = 'socks5://47.52.231.140:8080'
+telebot.apihelper.proxy = {'https': 'https://198.98.58.178:8080'}
 
 apiKey = constants.apiKey
 botToken = constants.botToken
