@@ -2,6 +2,9 @@ start
 help
  --- universal commands for every bot. There is no description to it.
 setlang - set the language
+getnews - get news from category
+getdetailed - get news from certain country and category
+getfavorites - get news from your favorite categories
 favorites - show your favorites
 addfavorites - add some to favorite list
 cutfavorites - cut the list of favorite categories
