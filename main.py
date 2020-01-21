@@ -187,9 +187,17 @@ def present_news(headlines):
 def get_favorites(message):
     global categoriesSelected
     print(categoriesSelected)
+
+    if len(categoriesSelected) == 0:
+        bot.send_message(message.chat.id, text=languages.no_favorites[interfaceLanguage] +
+                                               languages.use_to_edit_favorites[interfaceLanguage])
+        return
+
+    # print(dict.requests[str(languages.categories[categoriesSelected[0]][str('gb')])])
     for i in range(len(categoriesSelected)):
-        parse_news(dict.requests[categoriesSelected[i]]['q'], dict.requests[categoriesSelected[i]]['country'],
-                   dict.requests[categoriesSelected[i]]['category'])
+        parse_news(dict.requests[str(languages.categories[categoriesSelected[i]][str('gb')])]['q'],
+                   dict.requests[str(languages.categories[categoriesSelected[i]][str('gb')])]['country'],
+                   dict.requests[str(languages.categories[categoriesSelected[i]][str('gb')])]['category'])
 
 
 @bot.message_handler(commands=["favorites"])
@@ -202,7 +210,8 @@ def show_favorites(message):
     message_text = languages.your_favorites[interfaceLanguage]
 
     for i in range(len(categoriesSelected)):
-        message_text += str(i + 1) + ". " + str(categoriesSelected[i]) + "\n"
+        message_text += str(i + 1) + ". " + str(
+            languages.categories[categoriesSelected[i]][str(interfaceLanguage)]) + "\n"
 
     bot.send_message(message.chat.id, text=message_text)
 
@@ -223,8 +232,9 @@ def cut_favorites(message):
     keyboard = telebot.types.InlineKeyboardMarkup()
 
     for i in range(len(categoriesSelected)):
-        keyboardButton = telebot.types.InlineKeyboardButton(categoriesSelected[i],
-                                                            callback_data="cut_" + str(categoriesSelected[i]))
+        keyboardButton = telebot.types.InlineKeyboardButton(
+            languages.categories[categoriesSelected[i]][str(interfaceLanguage)],
+            callback_data="cut_" + str(categoriesSelected[i]))
         keyboard.add(keyboardButton)
         print(categoriesSelected[i])
 
@@ -333,7 +343,7 @@ def set_categories_now(c):
     bot.answer_callback_query(callback_query_id=c.id, text=languages.added[interfaceLanguage])
 
     # categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=ru&apiKey=" + apiKey)
-    categoriesSelected.append("Russian top")
+    categoriesSelected.append("ru_top")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
     # bot.send_message(c.message.chat.id, 'Added')
@@ -346,7 +356,7 @@ def set_categories_now(c):
     bot.answer_callback_query(callback_query_id=c.id, text=languages.added[interfaceLanguage])
 
     # categoriesSelected.append("https://newsapi.org/v2/top-headlines?country=fr&apiKey=" + apiKey)
-    categoriesSelected.append("France top")
+    categoriesSelected.append("fr_top")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
     # bot.send_message(c.message.chat.id, 'Added')
@@ -359,7 +369,7 @@ def set_categories_now(c):
     bot.answer_callback_query(callback_query_id=c.id, text=languages.added[interfaceLanguage])
 
     # categoriesSelected.append("https://newsapi.org/v2/top-headlines?q=apple&apiKey=" + apiKey)
-    categoriesSelected.append("Apple news")
+    categoriesSelected.append("apple_news")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
     # bot.send_message(c.message.chat.id, 'Added')
@@ -370,7 +380,7 @@ def set_categories_now(c):
     global categoriesSelected
 
     bot.answer_callback_query(callback_query_id=c.id, text=languages.added[interfaceLanguage])
-    categoriesSelected.append("USA top")
+    categoriesSelected.append("us_top")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
 
@@ -379,7 +389,7 @@ def set_categories_now(c):
     global categoriesSelected
 
     bot.answer_callback_query(callback_query_id=c.id, text=languages.added[interfaceLanguage])
-    categoriesSelected.append("General")
+    categoriesSelected.append("general")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
 
@@ -388,7 +398,7 @@ def set_categories_now(c):
     global categoriesSelected
 
     bot.answer_callback_query(callback_query_id=c.id, text=languages.added[interfaceLanguage])
-    categoriesSelected.append("Science")
+    categoriesSelected.append("science")
     print(categoriesSelected[len(categoriesSelected) - 1])
 
 

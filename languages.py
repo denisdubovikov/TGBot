@@ -12,7 +12,7 @@ business = {'ru': 'Бизнес', 'gb': 'Business'}
 sport = {'ru': 'Спорт', 'gb': 'Sports'}
 science = {'ru': 'Наука', 'gb': 'Science'}
 no_news = {'ru': 'Новостей по Вашему запросу не найдено :(', 'gb': 'There are no news for Your query :('}
-no_favorites = {'ru': 'У Вас нет избранных категорий', 'gb': 'You have no favorites'}
+no_favorites = {'ru': 'У Вас нет избранных категорий', 'gb': 'You have no favorites\n'}
 your_favorites = {'ru': 'Ваше избранное:\n', 'gb': 'Your favorites:\n'}
 list_is_empty = {'ru': 'Список пуст', 'gb': 'The list is empty'}
 choose_lang = {'ru': 'Выберите язык интерфейса. Новости из разных стран будут написаны на разных языках',
@@ -31,3 +31,9 @@ favorites_saved = {
 choose_country = {'ru': 'Выберите страну', 'gb': 'Choose the country'}
 lang_set = {'ru': 'Установлен русский язык', 'gb': 'English language was set'}
 saved = {'ru': 'Сохранено', 'gb': 'Saved'}
+categories = {'ru_top': {'ru': 'Топы России', 'gb': 'Russian top'},
+              'fr_top': {'ru': 'Топы Франции', 'gb': 'French top'},
+              'us_top': {'ru': 'Топы США', 'gb': 'USA top'},
+              'apple_news': {'ru': 'Новости Apple', 'gb': 'Apple news'},
+              'general': {'ru': 'Главное', 'gb': 'General'},
+              'science': {'ru': 'Наука', 'gb': 'Science'}}
